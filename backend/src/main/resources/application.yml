@@ -10,6 +10,18 @@ spring:
       hibernate:
         format_sql: false
     show-sql: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# Voice (STT/TTS): calls Google Cloud Speech-to-Text / Text-to-Speech via their
+# REST APIs using a plain API key. Set GOOGLE_CLOUD_API_KEY in the environment;
+# left blank, voice endpoints respond with a clear "not configured" error
+# instead of the rest of the app being affected.
+aegiscare:
+  voice:
+    google-api-key: ${GOOGLE_CLOUD_API_KEY:}
 
 logging:
   level:
