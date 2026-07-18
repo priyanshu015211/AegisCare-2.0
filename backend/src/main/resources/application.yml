@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: aegiscare-backend
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.aegiscare: INFO
