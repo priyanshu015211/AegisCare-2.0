@@ -12,10 +12,38 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+async function postAudio(path: string, audio: Blob): Promise<{ transcript: string }> {
+  const form = new FormData();
+  form.append('audio', audio, 'recording.webm');
+  const res = await fetch(`${BASE}${path}`, { method: 'POST', body: form });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`${res.status} ${text}`);
+  }
+  return res.json();
+}
+
+async function postForAudio(path: string, body: unknown): Promise<Blob> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`${res.status} ${text}`);
+  }
+  return res.blob();
+}
+
 export const api = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
+  /** Uploads a recorded audio clip and returns its transcript via Google Speech-to-Text. */
+  transcribeAudio: (audio: Blob) => postAudio('/voice/transcribe', audio),
+  /** Sends text to Google Text-to-Speech and returns the spoken response as playable audio. */
+  synthesizeSpeech: (text: string) => postForAudio('/voice/speak', { text }),
 };
 
 export interface StorageStatus {
