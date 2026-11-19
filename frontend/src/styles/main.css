@@ -611,3 +611,273 @@
 @media (prefers-reduced-motion: reduce) {
   .public-site * { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* AegisCare brand refresh — forest, cream and coral. A quieter, warmer editorial language. */
+.public-site {
+  --public-paper: #f4ecdf;
+  --public-paper-deep: #e9e2d4;
+  --public-ink: #253b32;
+  --public-muted: #6e796d;
+  --public-green: #3d574a;
+  --public-deep: #263d33;
+  --public-coral: #f88a79;
+  --public-sage: #dce4d8;
+  --public-line: #ded7c9;
+  background: var(--public-paper);
+  color: var(--public-ink);
+  font-family: var(--font-display);
+}
+.public-site ::selection { background: #f7b6a8; color: #253b32; }
+.public-header {
+  max-width: 1440px;
+  height: 86px;
+  padding: 0 48px;
+  border-bottom-color: #d8d0c2;
+}
+.public-brand-mark {
+  width: 42px; height: 42px; border-radius: 50% 50% 50% 12px;
+  background: var(--public-green); color: var(--public-paper);
+  font: 600 23px "Newsreader", Georgia, serif;
+}
+.public-brand-copy strong { color: var(--public-deep); font-family: "Newsreader", Georgia, serif; font-size: 18px; letter-spacing: -.2px; }
+.public-brand-copy small { color: #7e8376; letter-spacing: 1.55px; }
+.public-nav { gap: 34px; }
+.public-nav a { color: #5f6c60; font-size: 12px; }
+.public-nav a::after { background: var(--public-coral); height: 2px; }
+.public-nav a:hover { color: var(--public-green); }
+.public-header-cta {
+  padding: 13px 17px; border: 1px solid var(--public-green); border-radius: 2px;
+  color: var(--public-deep); font-size: 11px; letter-spacing: .05px;
+}
+.public-header-cta:hover { background: var(--public-green); color: var(--public-paper); border-color: var(--public-green); }
+.public-header-cta:hover svg { color: var(--public-coral); }
+.public-header-cta svg,.public-footer>a:last-child svg { color: var(--public-coral); }
+.public-hero {
+  max-width: 1440px; min-height: 700px; padding: 74px 48px 82px;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  gap: clamp(40px, 5vw, 74px);
+}
+.public-hero-copy { max-width: 625px; padding-top: 0; }
+.public-eyebrow { color: #777a6c; letter-spacing: 1.45px; font-size: 9px; }
+.eyebrow-rule { background: var(--public-coral); height: 3px; width: 28px; }
+.public-hero h1 {
+  max-width: 620px; margin: 27px 0 22px; color: var(--public-deep);
+  font-family: "Newsreader", Georgia, serif; font-size: clamp(58px, 5.4vw, 82px);
+  font-weight: 500; line-height: .99; letter-spacing: -2.9px;
+}
+.public-hero h1 em { display: inline; color: var(--public-green); font-family: "Newsreader", Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -2.9px; text-decoration: underline; text-decoration-color: var(--public-coral); text-decoration-thickness: 3px; text-underline-offset: 8px; }
+.public-hero-lede { max-width: 490px; color: #667268; font-size: 14px; line-height: 1.95; }
+.public-hero-actions { gap: 21px; margin-top: 30px; }
+.public-button-primary {
+  padding: 15px 19px; border: 1px solid var(--public-green); border-radius: 2px;
+  background: var(--public-green); color: var(--public-paper) !important; font-size: 11px;
+  letter-spacing: .1px; box-shadow: 4px 4px 0 var(--public-coral);
+}
+.public-button-primary:hover { background: var(--public-deep); border-color: var(--public-deep); box-shadow: 2px 2px 0 var(--public-coral); transform: translate(2px,2px); }
+.public-button-primary svg { color: var(--public-coral); }
+.public-text-link { border-bottom-color: #aeb4a5; color: var(--public-green) !important; font-size: 11px; }
+.public-text-link span { color: #dd7769; }
+.public-hero-assurance { margin-top: 42px; padding-top: 17px; border-top-color: #ded6c8; color: #657166; }
+.assurance-mark { background: #e5e7d9; color: var(--public-green); border-radius: 50%; }
+.public-hero-assurance strong { color: var(--public-green); font-family: "Newsreader", Georgia, serif; font-size: 14px; font-weight: 500; }
+.public-hero-assurance small { color: #818477; font-size: 10px; }
+
+/* Original visual: a single continuous thread with three human moments, not stock imagery. */
+.public-hero-visual.care-story-visual {
+  overflow: hidden; min-width: 0; padding: 20px 22px 0; border: 0; border-radius: 3px;
+  background: var(--public-green); box-shadow: 10px 10px 0 #e8b5a4, 0 24px 54px rgb(50 62 48 / 10%);
+}
+.care-story-visual .care-visual-topline { color: #e1e3d4; }
+.care-story-visual .care-visual-topline span:last-child { color: #b9c5b5; }
+.care-story-art {
+  height: clamp(410px, 39vw, 500px); min-height: 410px; position: relative; margin-top: 10px;
+  overflow: hidden; isolation: isolate; background: #506a58;
+}
+.care-story-art::before {
+  content: ""; position: absolute; z-index: -1; width: 68%; aspect-ratio: 1;
+  top: 1%; right: -8%; border: 1px solid rgb(244 236 223 / 20%); border-radius: 47% 53% 55% 45%;
+  transform: rotate(-19deg); box-shadow: 0 0 0 20px rgb(244 236 223 / 4%), 0 0 0 42px rgb(244 236 223 / 3%);
+}
+.care-story-art::after {
+  content: ""; position: absolute; z-index: -1; width: 37%; aspect-ratio: 1; left: -8%; bottom: -22%;
+  border: 1px solid rgb(248 138 121 / 45%); border-radius: 50%; box-shadow: 0 0 0 18px rgb(248 138 121 / 5%), 0 0 0 37px rgb(248 138 121 / 4%);
+}
+.story-coral-sun {
+  position: absolute; z-index: -1; width: 270px; height: 270px; right: 8%; top: 6%;
+  border-radius: 49% 51% 43% 57%; background: var(--public-coral); opacity: .97;
+  transform: rotate(17deg);
+}
+.story-soft-shape {
+  position: absolute; z-index: -1; width: 260px; height: 300px; left: 28%; top: 23%;
+  border-radius: 48% 52% 58% 42%; background: #a7b39a; opacity: .28; transform: rotate(-24deg);
+}
+.story-thread { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.story-overline {
+  position: absolute; z-index: 2; top: 12%; left: 8%; color: #f4ecdf;
+  font: 9px var(--font-mono); letter-spacing: 1.3px;
+}
+.story-statement {
+  position: absolute; z-index: 2; top: 23%; left: 8%; max-width: 370px;
+  color: var(--public-paper); font: 500 clamp(30px, 3.2vw, 44px)/.98 "Newsreader", Georgia, serif;
+  letter-spacing: -1.1px;
+}
+.story-statement em { color: #ffb0a0; font-weight: 400; }
+.story-step {
+  position: absolute; z-index: 3; display: flex; flex-direction: column; gap: 3px;
+  padding: 0; color: var(--public-paper); min-width: 130px;
+}
+.story-step span { color: #ffac9a; font: 9px var(--font-mono); letter-spacing: .9px; }
+.story-step strong { font: 500 17px "Newsreader", Georgia, serif; }
+.story-step small { color: #cbd3c4; font-size: 9px; }
+.story-step-one { left: 5%; bottom: 5%; }
+.story-step-two { left: 42%; bottom: 5%; }
+.story-step-three { right: 4%; bottom: 5%; text-align: right; align-items: flex-end; }
+.story-handwritten {
+  position: absolute; z-index: 2; top: 12%; right: 7%; color: #f4ecdf;
+  font: italic 17px "Newsreader", Georgia, serif; transform: rotate(-7deg); opacity: .92;
+}
+.care-story-visual .care-visual-footer {
+  min-height: 54px; color: #d6dfd2; border-top-color: rgb(244 236 223 / 19%); font: 10px "Newsreader", Georgia, serif;
+}
+.care-story-visual .care-visual-footer span:last-child { color: #b9c5b5; font: 8px var(--font-mono); letter-spacing: .9px; }
+
+.public-belief {
+  padding: 91px max(48px, calc((100vw - 1320px) / 2)) 56px;
+  background: var(--public-coral); color: var(--public-deep);
+}
+.belief-label { color: #604f43; }
+.belief-label span:first-child { color: var(--public-deep); }
+.belief-main { grid-template-columns: 1.08fr .72fr; gap: 88px; margin-top: 34px; }
+.belief-main h2 {
+  max-width: 760px; color: var(--public-deep); font: 500 clamp(39px, 4.25vw, 59px)/1.04 "Newsreader", Georgia, serif;
+  letter-spacing: -1.5px;
+}
+.belief-main h2 em { color: #fff2df; font-style: italic; }
+.belief-copy p { color: #5f5146; font-size: 12px; line-height: 1.95; }
+.belief-foot { border-top-color: rgb(48 60 47 / 22%); color: #5b5c4d; }
+.belief-foot-mark { border-color: rgb(48 60 47 / 35%); color: var(--public-deep); border-radius: 50%; }
+.belief-foot strong { color: var(--public-deep); }
+.public-how { max-width: 1440px; padding: 106px 48px 112px; }
+.public-section-intro h2 { color: var(--public-deep); font: 500 clamp(37px, 3.8vw, 54px)/1.05 "Newsreader", Georgia, serif; letter-spacing: -1.3px; }
+.public-section-intro h2 em { color: var(--public-green); font-style: italic; text-decoration: underline; text-decoration-color: var(--public-coral); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.section-intro-copy { color: #77796b; }
+.care-journey { gap: 40px; }
+.journey-step { min-height: 220px; border-top: 1px solid #b8b9a8; }
+.journey-step:not(:last-child)::after { background: var(--public-coral); width: 7px; height: 7px; top: -4px; }
+.journey-number { color: #918d7d; }
+.journey-icon { color: var(--public-green); background: #e6e5d7; border-radius: 50%; }
+.journey-step h3 { color: var(--public-deep); font: 500 21px "Newsreader", Georgia, serif; letter-spacing: -.2px; }
+.journey-step p { color: #70766a; font-size: 12px; }
+.journey-disclaimer { color: #908a7b; }
+.public-workspace {
+  background: var(--public-green); color: var(--public-paper);
+  padding: 91px max(48px, calc((100vw - 1320px) / 2)); gap: 92px;
+}
+.workspace-copy h2 { color: var(--public-paper); font: 500 clamp(38px, 3.9vw, 54px)/1.04 "Newsreader", Georgia, serif; letter-spacing: -1.3px; }
+.workspace-copy h2 em { color: #ffad9c; font-style: italic; }
+.workspace-copy>p:not(.public-eyebrow) { color: #d0d9ca; }
+.public-workspace .public-eyebrow { color: #d6dcca; }
+.public-workspace .eyebrow-rule { background: var(--public-coral); }
+.public-workspace .public-button-primary { margin-top: 27px; background: var(--public-paper); color: var(--public-deep) !important; border-color: var(--public-paper); box-shadow: 4px 4px 0 var(--public-coral); }
+.public-workspace .public-button-primary svg { color: var(--public-green); }
+.public-workspace .public-button-primary:hover { background: #fff8ee; }
+.workspace-list { border-top-color: rgb(244 236 223 / 27%); }
+.workspace-row { border-bottom-color: rgb(244 236 223 / 27%); }
+.workspace-row-icon { background: #596f5c; color: #ffb3a4; border-radius: 50%; }
+.workspace-row strong { color: var(--public-paper); font: 500 18px "Newsreader", Georgia, serif; }
+.workspace-row small { color: #c4d0c2; }
+.workspace-row-number { color: #ffb2a1; }
+.public-ai { border-bottom-color: #ddd4c5; }
+.ai-symbol { border-color: #c5b9a6; color: var(--public-green); border-radius: 50%; }
+.ai-copy h2 { color: var(--public-deep); font: 500 clamp(30px, 3.3vw, 43px)/1.08 "Newsreader", Georgia, serif; letter-spacing: -1px; }
+.ai-copy h2 em { color: var(--public-green); font-style: italic; }
+.ai-copy>p:last-child { color: #74796d; }
+.public-patient-note { border-top: 1px solid #e0d7c8; }
+.patient-note-label { color: #b56b5c; }
+.public-patient-note h2 { color: var(--public-deep); font: 500 26px "Newsreader", Georgia, serif; }
+.public-patient-note p { color: #74796d; }
+.public-footer { border-top-color: #d8d0c2; }
+.public-footer .public-brand-mark { background: var(--public-green); }
+.footer-thought { color: #7f7b6e; font: italic 18px "Newsreader", Georgia, serif; }
+.public-footer>a:last-child { color: var(--public-green); }
+
+@media (max-width: 980px) {
+  .public-header { padding: 0 27px; }
+  .public-hero { padding: 62px 27px 68px; gap: 35px; grid-template-columns: .92fr 1.08fr; }
+  .public-hero h1 { font-size: clamp(46px, 5.4vw, 66px); letter-spacing: -1.8px; }
+  .public-hero h1 em { letter-spacing: -1.8px; }
+  .care-story-art { height: 430px; min-height: 430px; }
+  .story-statement { font-size: clamp(30px, 3.6vw, 38px); }
+  .story-step { min-width: 105px; }
+  .story-step strong { font-size: 15px; }
+  .belief-main { grid-template-columns: 1fr .82fr; gap: 45px; }
+  .public-workspace { padding-left: 34px; padding-right: 34px; gap: 48px; }
+}
+@media (max-width: 680px) {
+  .public-header { height: 70px; padding: 0 18px; gap: 10px; }
+  .public-nav { display: none; }
+  .public-header-cta { padding: 10px 11px; font-size: 10px; }
+  .public-brand-mark { width: 35px; height: 35px; }
+  .public-hero { display: flex; flex-direction: column; align-items: stretch; padding: 47px 21px 52px; gap: 34px; }
+  .public-hero h1 { max-width: 560px; margin: 22px 0 17px; font-size: clamp(43px, 12vw, 58px); line-height: 1.01; letter-spacing: -1.6px; }
+  .public-hero h1 em { letter-spacing: -1.6px; text-underline-offset: 5px; }
+  .public-hero-lede { font-size: 13px; line-height: 1.85; }
+  .public-hero-actions { gap: 17px; margin-top: 25px; }
+  .public-hero-assurance { margin-top: 31px; }
+  .public-hero-visual.care-story-visual { padding: 14px 13px 0; border-radius: 2px; box-shadow: 5px 5px 0 #e8b5a4, 0 16px 35px rgb(50 62 48 / 10%); }
+  .care-story-art { height: 390px; min-height: 390px; }
+  .story-coral-sun { width: 205px; height: 205px; right: -2%; top: 7%; }
+  .story-statement { top: 23%; left: 7%; max-width: 270px; font-size: 35px; }
+  .story-overline { top: 10%; left: 7%; font-size: 8px; }
+  .story-handwritten { top: 11%; right: 5%; font-size: 13px; }
+  .story-step { min-width: 0; max-width: 102px; }
+  .story-step-one { left: 4%; bottom: 5%; }
+  .story-step-two { left: 40%; bottom: 5%; }
+  .story-step-three { right: 4%; bottom: 5%; }
+  .story-step strong { font-size: 14px; }
+  .story-step small { font-size: 8px; line-height: 1.3; }
+  .care-story-visual .care-visual-footer { min-height: 48px; gap: 12px; font-size: 9px; }
+  .care-story-visual .care-visual-footer span:last-child { font-size: 7px; }
+  .public-belief { padding: 65px 23px 38px; }
+  .belief-main { display: block; margin-top: 28px; }
+  .belief-main h2 { font-size: 39px; letter-spacing: -.8px; line-height: 1.04; }
+  .belief-copy { margin-top: 24px; }
+  .belief-copy p { font-size: 12px; }
+  .belief-foot { margin-top: 35px; }
+  .public-how { padding: 70px 22px 73px; }
+  .public-section-intro { display: block; margin-bottom: 35px; }
+  .public-section-intro h2 { margin-top: 20px; font-size: 38px; }
+  .section-intro-copy { margin-top: 16px; }
+  .care-journey { grid-template-columns: 1fr; gap: 0; }
+  .journey-step { min-height: unset; padding: 17px 0 23px; display: grid; grid-template-columns: 35px 1fr; column-gap: 13px; }
+  .journey-step:not(:last-child)::after { top: auto; bottom: -2px; left: 15px; right: auto; }
+  .journey-step-top { grid-row: span 2; align-items: start; flex-direction: column; gap: 15px; }
+  .journey-step h3 { margin: 0 0 7px; align-self: end; font-size: 20px; }
+  .journey-step p { max-width: none; grid-column: 2; }
+  .journey-disclaimer { line-height: 1.7; }
+  .public-workspace { display: block; padding: 67px 22px 72px; }
+  .workspace-copy h2 { margin-top: 19px; font-size: 39px; }
+  .workspace-list { margin-top: 43px; }
+  .workspace-row { grid-template-columns: 38px 1fr 25px; gap: 11px; min-height: 82px; }
+  .workspace-row strong { font-size: 16px; }
+  .workspace-row small { font-size: 9px; }
+  .public-ai { grid-template-columns: 42px 1fr; gap: 17px; margin: 0 22px; padding: 65px 0 70px; }
+  .ai-copy { grid-column: 2; }
+  .ai-copy h2 { font-size: 32px; }
+  .ai-copy>p:last-child { margin-top: 14px; }
+  .public-patient-note { display: block; margin: 0 22px; padding: 36px 0 48px; }
+  .patient-note-label { margin-bottom: 18px; }
+  .public-patient-note h2 { font-size: 24px; }
+  .public-footer { margin: 0 18px; padding: 21px 0; flex-wrap: wrap; }
+  .footer-thought { order: 3; width: 100%; }
+  .public-footer>a:last-child { font-size: 10px; }
+}
+@media (max-width: 380px) {
+  .public-header-cta { font-size: 9px; padding: 9px; }
+  .public-brand-copy strong { font-size: 15px; }
+  .public-brand-copy small { font-size: 8px; }
+  .story-handwritten { display: none; }
+  .story-step { max-width: 88px; }
+  .story-step strong { font-size: 13px; }
+  .story-step small { font-size: 7px; }
+}
