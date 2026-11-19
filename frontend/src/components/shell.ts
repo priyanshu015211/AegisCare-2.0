@@ -1,36 +1,38 @@
 import type { HealthResponse } from '../api/client';
 import { api } from '../api/client';
+import { escapeHtml } from './ui';
 
 export interface NavItem {
   id: string;
   label: string;
   glyph: string;
+  group: 'Workspace' | 'Insights';
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: 'Overview', glyph: '\u25A6' },
-  { id: 'triage', label: 'Patient Triage', glyph: '\u2695' },
-  { id: 'emergency', label: 'Emergency Center', glyph: '\u26A0' },
-  { id: 'coordination', label: 'Coordination', glyph: '\u25C8' },
-  { id: 'analytics', label: 'Analytics', glyph: '\u2237' },
+  { id: 'dashboard', label: 'Overview', glyph: '▦', group: 'Workspace' },
+  { id: 'triage', label: 'Patient triage', glyph: '✚', group: 'Workspace' },
+  { id: 'emergency', label: 'Emergency center', glyph: '⌁', group: 'Workspace' },
+  { id: 'coordination', label: 'Coordination', glyph: '◇', group: 'Workspace' },
+  { id: 'analytics', label: 'Analytics', glyph: '▥', group: 'Insights' },
 ];
 
 export function renderShell(root: HTMLElement, activeId: string): HTMLElement {
   root.innerHTML = '';
 
   const layout = document.createElement('div');
-  layout.className = 'min-h-screen flex bg-paper text-ink';
+  layout.className = 'app-layout';
 
   layout.appendChild(buildSidebar(activeId));
 
   const main = document.createElement('div');
-  main.className = 'flex-1 flex flex-col min-w-0';
+  main.className = 'app-main';
 
   main.appendChild(buildTopbar(activeId));
 
   const content = document.createElement('main');
   content.id = 'page-content';
-  content.className = 'flex-1 p-6 lg:p-8 max-w-[1400px] w-full mx-auto';
+  content.className = 'page-content';
   main.appendChild(content);
 
   layout.appendChild(main);
@@ -40,74 +42,80 @@ export function renderShell(root: HTMLElement, activeId: string): HTMLElement {
 }
 
 function buildSidebar(activeId: string): HTMLElement {
-  const nav = document.createElement('aside');
-  nav.className = 'w-[220px] shrink-0 bg-console text-paper-raised flex flex-col border-r border-console-line';
-
-  nav.innerHTML = `
-    <div class="px-5 py-6 border-b border-console-line">
-      <div class="flex items-baseline gap-2">
-        <span class="text-lg font-semibold tracking-tight">AegisCare</span>
-      </div>
-      <div class="text-[11px] uppercase tracking-[0.14em] text-paper-raised/50 mt-1 font-mono">
-        Coordination Console
-      </div>
+  const aside = document.createElement('aside');
+  aside.className = 'app-sidebar';
+  aside.innerHTML = `
+    <a class="brand-lockup" href="#home" aria-label="Return to AegisCare home">
+      <span class="brand-mark">A</span>
+      <span class="brand-copy">
+        <strong>AegisCare</strong>
+        <small>Care operations</small>
+      </span>
+    </a>
+    <div class="sidebar-context">
+      <span class="context-dot"></span>
+      HEALTH NETWORK
     </div>
-    <nav class="flex-1 py-3" id="nav-list"></nav>
-    <div class="px-5 py-4 border-t border-console-line text-[11px] font-mono text-paper-raised/40">
-      v2.0 &mdash; JVM edition
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      ${(['Workspace', 'Insights'] as const).map(group => `
+        <div class="nav-group">
+          <div class="nav-group-label">${group}</div>
+          ${NAV_ITEMS.filter(item => item.group === group).map(item => `
+            <a href="#${item.id}" class="nav-link ${item.id === activeId ? 'active' : ''}" ${item.id === activeId ? 'aria-current="page"' : ''}>
+              <span class="nav-glyph" aria-hidden="true">${item.glyph}</span>
+              <span>${item.label}</span>
+              ${item.id === 'emergency' ? '<span class="nav-live-dot" title="Emergency monitoring"></span>' : ''}
+            </a>
+          `).join('')}
+        </div>
+      `).join('')}
+    </nav>
+    <div class="sidebar-footer">
+      <div class="profile-avatar">AC</div>
+      <div class="profile-copy"><strong>Operations team</strong><small>Administrator</small></div>
+      <span class="profile-menu" aria-hidden="true">···</span>
     </div>
   `;
-
-  const list = nav.querySelector('#nav-list') as HTMLElement;
-  NAV_ITEMS.forEach((item) => {
-    const isActive = item.id === activeId;
-    const a = document.createElement('a');
-    a.href = `#${item.id}`;
-    a.className = [
-      'flex items-center gap-3 px-5 py-2.5 text-sm border-l-2 transition-colors',
-      isActive
-        ? 'border-brand bg-white/[0.06] text-white font-medium'
-        : 'border-transparent text-paper-raised/60 hover:text-white hover:bg-white/[0.04]',
-    ].join(' ');
-    a.innerHTML = `<span class="w-4 text-center opacity-80">${item.glyph}</span><span>${item.label}</span>`;
-    list.appendChild(a);
-  });
-
-  return nav;
+  return aside;
 }
 
 function buildTopbar(activeId: string): HTMLElement {
   const bar = document.createElement('header');
-  bar.className = 'h-14 border-b border-line bg-paper-raised flex items-center justify-between px-6 shrink-0';
-
-  const title = NAV_ITEMS.find((n) => n.id === activeId)?.label ?? '';
+  bar.className = 'app-topbar';
+  const title = NAV_ITEMS.find(n => n.id === activeId)?.label ?? 'Overview';
   bar.innerHTML = `
-    <div class="text-sm text-ink-soft font-mono uppercase tracking-wide">${title}</div>
-    <div id="storage-indicator" class="flex items-center gap-2 text-xs font-mono text-ink-soft">
-      <span class="w-2 h-2 rounded-full bg-line-strong animate-pulse"></span> checking storage&hellip;
+    <div class="topbar-left">
+      <button type="button" class="mobile-menu" id="mobile-menu" aria-label="Toggle navigation">☰</button>
+      <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-separator">/</span><strong>${escapeHtml(title)}</strong></div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date"><span class="topbar-date-label">LOCAL TIME</span><strong id="local-clock">--:--</strong></div>
+      <div id="storage-indicator" class="storage-pill"><span class="status-dot"></span><span>Checking connection</span></div>
     </div>
   `;
 
-  loadStorageStatus(bar.querySelector('#storage-indicator') as HTMLElement);
+  const menuButton = bar.querySelector('#mobile-menu') as HTMLButtonElement;
+  menuButton.addEventListener('click', () => document.body.classList.toggle('nav-open'));
 
+  const clock = bar.querySelector('#local-clock') as HTMLElement;
+  const updateClock = () => { clock.textContent = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(new Date()); };
+  updateClock();
+  window.setInterval(updateClock, 30_000);
+
+  loadStorageStatus(bar.querySelector('#storage-indicator') as HTMLElement);
   return bar;
 }
 
 async function loadStorageStatus(el: HTMLElement) {
   try {
     const health = await api.get<HealthResponse>('/system/health');
-    const mode = health.storage.mode;
-    const isSupabase = mode === 'supabase';
-    const dotColor = isSupabase ? 'bg-severity-low' : 'bg-severity-medium';
-    const label = isSupabase ? 'Supabase (Postgres)' : 'Local file store (fallback)';
-    el.innerHTML = `
-      <span class="w-2 h-2 rounded-full ${dotColor}"></span>
-      <span title="${health.storage.detail}">${label}</span>
-    `;
+    const isSupabase = health.storage.mode === 'supabase';
+    el.classList.toggle('is-connected', isSupabase);
+    el.classList.toggle('is-fallback', !isSupabase);
+    el.innerHTML = `<span class="status-dot"></span><span>${isSupabase ? 'Database connected' : 'Demo storage mode'}</span>`;
+    el.title = health.storage.detail;
   } catch {
-    el.innerHTML = `
-      <span class="w-2 h-2 rounded-full bg-severity-critical"></span>
-      <span>Backend unreachable</span>
-    `;
+    el.classList.add('is-error');
+    el.innerHTML = '<span class="status-dot"></span><span>Backend unavailable</span>';
   }
 }
