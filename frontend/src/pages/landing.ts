@@ -18,7 +18,7 @@ export function renderLanding(root: HTMLElement) {
       <header class="public-header">
         <a class="public-brand" href="#home" aria-label="AegisCare home">
           <span class="public-brand-mark">A</span>
-          <span class="public-brand-copy"><strong>AegisCare</strong><small>Care coordination</small></span>
+          <span class="public-brand-copy"><strong>AegisCare</strong><small>Care, connected.</small></span>
         </a>
         <nav class="public-nav" aria-label="Main navigation">
           <a href="#our-approach">Why AegisCare</a>
@@ -31,75 +31,62 @@ export function renderLanding(root: HTMLElement) {
       <main id="main-content">
         <section class="public-hero" id="home" aria-labelledby="hero-title">
           <div class="public-hero-copy">
-            <p class="public-eyebrow"><span class="eyebrow-rule"></span> A clearer thread through care</p>
-            <h1 id="hero-title">Care is a journey.<br><em>It should feel connected.</em></h1>
-            <p class="public-hero-lede">AegisCare brings assessments, urgent reviews and care-team coordination into one shared view — helping the people providing care keep the person, and the next step, in sight.</p>
+            <p class="public-eyebrow"><span class="eyebrow-rule"></span> A little more continuity in care</p>
+            <h1 id="hero-title">You shouldn't have to tell your story <em>twice.</em></h1>
+            <p class="public-hero-lede">When care moves between people and places, the details that matter can get left behind. AegisCare is being built to help care teams keep assessments, urgent reviews and next steps connected — with the person at the centre.</p>
             <div class="public-hero-actions">
-              <a class="public-button-primary" href="#how-it-works">See how it works ${icon('arrow')}</a>
-              <a class="public-text-link" href="#dashboard">I'm part of a care team <span>↗</span></a>
+              <a class="public-button-primary" href="#how-it-works">See the care journey ${icon('arrow')}</a>
+              <a class="public-text-link" href="#dashboard">For care teams <span>↗</span></a>
             </div>
             <div class="public-hero-assurance">
               <span class="assurance-mark">${icon('heart')}</span>
-              <span><strong>People first. Always.</strong><small>Technology in support of thoughtful care.</small></span>
+              <span><strong>One person. One connected story.</strong><small>Designed around the moments between visits.</small></span>
             </div>
           </div>
 
-          <div class="public-hero-visual" role="img" aria-label="An original abstract illustration showing three connected stages of a care journey: listen, review and coordinate.">
-            <div class="care-visual-topline"><span>THE CARE JOURNEY</span><span>01 — 03</span></div>
-            <div class="care-visual-art">
-              <div class="care-orbit care-orbit-one"></div>
-              <div class="care-orbit care-orbit-two"></div>
-              <div class="care-orbit care-orbit-three"></div>
-              <svg class="care-route-svg" viewBox="0 0 720 500" fill="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="care-route-gradient" x1="90" y1="350" x2="630" y2="170" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#1C8178"/>
-                    <stop offset=".52" stop-color="#73A99A"/>
-                    <stop offset="1" stop-color="#C08D60"/>
-                  </linearGradient>
-                  <filter id="care-node-shadow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#294B42" flood-opacity=".12"/>
-                  </filter>
-                </defs>
-                <path d="M82 333C174 333 178 174 342 174C486 174 475 341 638 341" stroke="#fff" stroke-width="20" stroke-linecap="round"/>
-                <path d="M82 333C174 333 178 174 342 174C486 174 475 341 638 341" stroke="url(#care-route-gradient)" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 11"/>
-                <path d="M82 333C174 333 178 174 342 174C486 174 475 341 638 341" stroke="url(#care-route-gradient)" stroke-width="1.3" stroke-linecap="round" opacity=".6"/>
-                <circle cx="82" cy="333" r="25" fill="#E5F0EA" stroke="#9ABDB0" stroke-width="1.5"/>
-                <circle cx="82" cy="333" r="8" fill="#1C8178"/>
-                <circle cx="342" cy="174" r="34" fill="#fff" stroke="#A9C7B8" stroke-width="1.5" filter="url(#care-node-shadow)"/>
-                <circle cx="342" cy="174" r="12" fill="#1C8178"/>
-                <circle cx="638" cy="341" r="25" fill="#F3E7D9" stroke="#D4B18C" stroke-width="1.5"/>
-                <circle cx="638" cy="341" r="8" fill="#B98253"/>
-                <path d="M342 72V116M82 383V426M638 391V426" stroke="#9DB9AC" stroke-width="1" stroke-dasharray="3 5"/>
-                <circle cx="342" cy="72" r="3" fill="#B98253"/>
-                <circle cx="82" cy="426" r="3" fill="#1C8178"/>
-                <circle cx="638" cy="426" r="3" fill="#B98253"/>
+          <div class="public-hero-visual care-story-visual" role="img" aria-label="An original illustration of one continuous care thread connecting listening, review and the next step.">
+            <div class="care-visual-topline"><span>A CARE STORY, HELD TOGETHER</span><span>AEGISCARE / 01</span></div>
+            <div class="care-story-art">
+              <div class="story-coral-sun"></div>
+              <div class="story-soft-shape"></div>
+              <svg class="story-thread" viewBox="0 0 640 500" fill="none" aria-hidden="true">
+                <path d="M70 344C156 344 167 274 245 278C320 282 315 206 386 206C466 206 485 171 580 174" stroke="#F4ECDF" stroke-width="20" stroke-linecap="round" opacity=".28"/>
+                <path d="M70 344C156 344 167 274 245 278C320 282 315 206 386 206C466 206 485 171 580 174" stroke="#F4ECDF" stroke-width="5" stroke-linecap="round"/>
+                <path d="M70 344C156 344 167 274 245 278C320 282 315 206 386 206C466 206 485 171 580 174" stroke="#F88A79" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 13"/>
+                <circle cx="70" cy="344" r="25" fill="#F4ECDF" stroke="#F88A79" stroke-width="3"/>
+                <circle cx="70" cy="344" r="7" fill="#3D574A"/>
+                <circle cx="386" cy="206" r="30" fill="#F4ECDF" stroke="#F88A79" stroke-width="3"/>
+                <path d="M386 216s-13-8-13-16a7 7 0 0 1 13-4 7 7 0 0 1 13 4c0 8-13 16-13 16Z" stroke="#3D574A" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="580" cy="174" r="25" fill="#F4ECDF" stroke="#F88A79" stroke-width="3"/>
+                <circle cx="580" cy="174" r="7" fill="#3D574A"/>
               </svg>
-              <div class="care-visual-center-note"><span class="center-note-kicker">ONE SHARED PICTURE</span><strong>Keep the whole<br>person in view.</strong><span class="center-note-rule"></span></div>
-              <div class="care-stage care-stage-one"><span class="care-stage-number">01</span><strong>Listen</strong><small>Understand what matters</small></div>
-              <div class="care-stage care-stage-two"><span class="care-stage-number">02</span><strong>Review</strong><small>Bring the right details forward</small></div>
-              <div class="care-stage care-stage-three"><span class="care-stage-number">03</span><strong>Connect</strong><small>Make the next step visible</small></div>
+              <div class="story-overline">THE DETAILS THAT MATTER</div>
+              <div class="story-statement">Shouldn't have to<br><em>start over.</em></div>
+              <div class="story-step story-step-one"><span>01</span><strong>Be heard</strong><small>Start with the person</small></div>
+              <div class="story-step story-step-two"><span>02</span><strong>Be understood</strong><small>Keep the context close</small></div>
+              <div class="story-step story-step-three"><span>03</span><strong>Move forward</strong><small>Make the next step clearer</small></div>
+              <div class="story-handwritten">care, carried forward</div>
             </div>
-            <div class="care-visual-footer"><span>A connected journey, not another handoff to figure out alone.</span><span>ILLUSTRATIVE WORKFLOW</span></div>
+            <div class="care-visual-footer"><span>Listen carefully. Keep the story connected.</span><span>OUR GUIDING IDEA</span></div>
           </div>
         </section>
 
         <section class="public-belief" id="our-approach" aria-labelledby="belief-title">
           <div class="belief-label"><span>01</span><span>Why we're building AegisCare</span></div>
           <div class="belief-main">
-            <h2 id="belief-title">People don't experience care in departments. They experience the <em>moments between them.</em></h2>
+            <h2 id="belief-title">A person remembers the conversation. A system remembers the record. <em>Care needs both.</em></h2>
             <div class="belief-copy">
-              <p>One conversation becomes an assessment. An assessment may need an urgent review. A review may lead to another team or another facility. Each handoff carries context that matters to the person receiving care.</p>
-              <p>When that context is hard to find, people can be left repeating themselves and care teams can be left piecing together what happened before. AegisCare is being built to make those connections easier to follow.</p>
+              <p>A person may explain what is happening, answer the same questions again, wait for a review and then meet a new team. From their side, it is one experience — even when the work behind it crosses departments and facilities.</p>
+              <p>AegisCare is being built around that gap. It gives care teams a clearer way to follow assessments, urgent reviews and coordination activity, so the context behind a decision is easier to find when the next person needs it.</p>
             </div>
           </div>
-          <div class="belief-foot"><span class="belief-foot-mark">A</span><span>Less time trying to reconnect the dots.<br><strong>More room to focus on the person in front of you.</strong></span></div>
+          <div class="belief-foot"><span class="belief-foot-mark">A</span><span>The record matters.<br><strong>The person matters more.</strong></span></div>
         </section>
 
         <section class="public-how" id="how-it-works" aria-labelledby="how-title">
           <div class="public-section-intro">
             <p class="public-eyebrow"><span class="eyebrow-rule"></span> The care journey</p>
-            <h2 id="how-title">A little more clarity at <em>every step.</em></h2>
+            <h2 id="how-title">Small moments of clarity. <em>One more connected experience.</em></h2>
             <p class="section-intro-copy">The platform is designed around practical work that helps care teams keep a person's situation in view.</p>
           </div>
           <div class="care-journey">
@@ -125,8 +112,8 @@ export function renderLanding(root: HTMLElement) {
         <section class="public-workspace" id="for-care-teams" aria-labelledby="workspace-title">
           <div class="workspace-copy">
             <p class="public-eyebrow"><span class="eyebrow-rule"></span> For the people providing care</p>
-            <h2 id="workspace-title">A shared picture for the people doing <em>the work.</em></h2>
-            <p>AegisCare brings key parts of care coordination into one workspace. Not to make healthcare feel more technical, but to make the day-to-day work easier to follow.</p>
+            <h2 id="workspace-title">The tools should make room for <em>the human work.</em></h2>
+            <p>Behind every clear patient conversation is a care team doing careful, often invisible work. AegisCare is being built to make that work easier to see, share and follow through.</p>
             <a class="public-button-primary" href="#dashboard">Explore the care team workspace ${icon('arrow')}</a>
           </div>
           <div class="workspace-list" aria-label="Care team workspace areas">
@@ -155,8 +142,8 @@ export function renderLanding(root: HTMLElement) {
       </main>
 
       <footer class="public-footer">
-        <a class="public-brand" href="#home"><span class="public-brand-mark">A</span><span class="public-brand-copy"><strong>AegisCare</strong><small>Care coordination</small></span></a>
-        <span class="footer-thought">Keep the person in view.</span>
+        <a class="public-brand" href="#home"><span class="public-brand-mark">A</span><span class="public-brand-copy"><strong>AegisCare</strong><small>Care, connected.</small></span></a>
+        <span class="footer-thought">Care, carried forward.</span>
         <a href="#dashboard">Care team access ${icon('arrowUpRight')}</a>
       </footer>
     </div>
