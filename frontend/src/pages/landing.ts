@@ -2,7 +2,6 @@ const icon = (name: string) => {
   const paths: Record<string, string> = {
     arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     arrowUpRight: '<path d="M7 17 17 7M8 7h9v9"/>',
-    people: '<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.9M16 3.2a4 4 0 0 1 0 7.6"/>',
     clipboard: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6M9 10h6M9 14h6M9 18h3"/>',
     pulse: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
     route: '<circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h3a4 4 0 0 0 4-4V10a4 4 0 0 1 4-4"/>',
@@ -32,50 +31,76 @@ export function renderLanding(root: HTMLElement) {
       <main id="main-content">
         <section class="public-hero" id="home" aria-labelledby="hero-title">
           <div class="public-hero-copy">
-            <p class="public-eyebrow"><span class="eyebrow-rule"></span> AegisCare / Care coordination</p>
-            <h1 id="hero-title">When care gets complicated, <em>people still need to feel seen.</em></h1>
-            <p class="public-hero-lede">AegisCare is being built to help care teams keep assessments, urgent concerns and facility coordination connected — so people don't get lost between the steps.</p>
+            <p class="public-eyebrow"><span class="eyebrow-rule"></span> A clearer thread through care</p>
+            <h1 id="hero-title">Care is a journey.<br><em>It should feel connected.</em></h1>
+            <p class="public-hero-lede">AegisCare brings assessments, urgent reviews and care-team coordination into one shared view — helping the people providing care keep the person, and the next step, in sight.</p>
             <div class="public-hero-actions">
-              <a class="public-button-primary" href="#our-approach">Why this matters ${icon('arrow')}</a>
+              <a class="public-button-primary" href="#how-it-works">See how it works ${icon('arrow')}</a>
               <a class="public-text-link" href="#dashboard">I'm part of a care team <span>↗</span></a>
             </div>
-            <p class="public-hero-note"><span class="note-line"></span> Built around a simple belief: the person comes before the process.</p>
+            <div class="public-hero-assurance">
+              <span class="assurance-mark">${icon('heart')}</span>
+              <span><strong>People first. Always.</strong><small>Technology in support of thoughtful care.</small></span>
+            </div>
           </div>
 
-          <figure class="public-hero-figure">
-            <div class="public-photo-wrap">
-              <img
-                class="public-hero-photo"
-                src="https://images.unsplash.com/photo-1758691462954-e6fa5005474b?auto=format&fit=crop&w=1800&q=85"
-                alt="A doctor and patient seated across a desk during a consultation"
-                fetchpriority="high"
-              />
-              <span class="photo-index">A CARE CONVERSATION / 01</span>
+          <div class="public-hero-visual" role="img" aria-label="An original abstract illustration showing three connected stages of a care journey: listen, review and coordinate.">
+            <div class="care-visual-topline"><span>THE CARE JOURNEY</span><span>01 — 03</span></div>
+            <div class="care-visual-art">
+              <div class="care-orbit care-orbit-one"></div>
+              <div class="care-orbit care-orbit-two"></div>
+              <div class="care-orbit care-orbit-three"></div>
+              <svg class="care-route-svg" viewBox="0 0 720 500" fill="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="care-route-gradient" x1="90" y1="350" x2="630" y2="170" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#1C8178"/>
+                    <stop offset=".52" stop-color="#73A99A"/>
+                    <stop offset="1" stop-color="#C08D60"/>
+                  </linearGradient>
+                  <filter id="care-node-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#294B42" flood-opacity=".12"/>
+                  </filter>
+                </defs>
+                <path d="M82 333C174 333 178 174 342 174C486 174 475 341 638 341" stroke="#fff" stroke-width="20" stroke-linecap="round"/>
+                <path d="M82 333C174 333 178 174 342 174C486 174 475 341 638 341" stroke="url(#care-route-gradient)" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 11"/>
+                <path d="M82 333C174 333 178 174 342 174C486 174 475 341 638 341" stroke="url(#care-route-gradient)" stroke-width="1.3" stroke-linecap="round" opacity=".6"/>
+                <circle cx="82" cy="333" r="25" fill="#E5F0EA" stroke="#9ABDB0" stroke-width="1.5"/>
+                <circle cx="82" cy="333" r="8" fill="#1C8178"/>
+                <circle cx="342" cy="174" r="34" fill="#fff" stroke="#A9C7B8" stroke-width="1.5" filter="url(#care-node-shadow)"/>
+                <circle cx="342" cy="174" r="12" fill="#1C8178"/>
+                <circle cx="638" cy="341" r="25" fill="#F3E7D9" stroke="#D4B18C" stroke-width="1.5"/>
+                <circle cx="638" cy="341" r="8" fill="#B98253"/>
+                <path d="M342 72V116M82 383V426M638 391V426" stroke="#9DB9AC" stroke-width="1" stroke-dasharray="3 5"/>
+                <circle cx="342" cy="72" r="3" fill="#B98253"/>
+                <circle cx="82" cy="426" r="3" fill="#1C8178"/>
+                <circle cx="638" cy="426" r="3" fill="#B98253"/>
+              </svg>
+              <div class="care-visual-center-note"><span class="center-note-kicker">ONE SHARED PICTURE</span><strong>Keep the whole<br>person in view.</strong><span class="center-note-rule"></span></div>
+              <div class="care-stage care-stage-one"><span class="care-stage-number">01</span><strong>Listen</strong><small>Understand what matters</small></div>
+              <div class="care-stage care-stage-two"><span class="care-stage-number">02</span><strong>Review</strong><small>Bring the right details forward</small></div>
+              <div class="care-stage care-stage-three"><span class="care-stage-number">03</span><strong>Connect</strong><small>Make the next step visible</small></div>
             </div>
-            <figcaption>
-              <span class="photo-caption-main">Before there is a plan, there is a person to listen to.</span>
-              <span class="photo-credit">Photo by <a href="https://unsplash.com/@vitalygariev" target="_blank" rel="noreferrer">Vitaly Gariev</a> on <a href="https://unsplash.com/photos/doctor-consulting-with-patient-at-desk-GBcLdqOBbXE" target="_blank" rel="noreferrer">Unsplash</a></span>
-            </figcaption>
-          </figure>
+            <div class="care-visual-footer"><span>A connected journey, not another handoff to figure out alone.</span><span>ILLUSTRATIVE WORKFLOW</span></div>
+          </div>
         </section>
 
         <section class="public-belief" id="our-approach" aria-labelledby="belief-title">
           <div class="belief-label"><span>01</span><span>Why we're building AegisCare</span></div>
           <div class="belief-main">
-            <h2 id="belief-title">A person doesn't experience care in departments. They experience the <em>moments between them.</em></h2>
+            <h2 id="belief-title">People don't experience care in departments. They experience the <em>moments between them.</em></h2>
             <div class="belief-copy">
-              <p>One conversation becomes an assessment. An assessment may need an urgent review. A review may lead to another team or another facility. Every handoff carries a little more of someone's story.</p>
+              <p>One conversation becomes an assessment. An assessment may need an urgent review. A review may lead to another team or another facility. Each handoff carries context that matters to the person receiving care.</p>
               <p>When that context is hard to find, people can be left repeating themselves and care teams can be left piecing together what happened before. AegisCare is being built to make those connections easier to follow.</p>
             </div>
           </div>
-          <div class="belief-foot"><span class="belief-foot-mark">A</span><span>Not another layer between people and care.<br><strong>A clearer way for the people providing it to work together.</strong></span></div>
+          <div class="belief-foot"><span class="belief-foot-mark">A</span><span>Less time trying to reconnect the dots.<br><strong>More room to focus on the person in front of you.</strong></span></div>
         </section>
 
         <section class="public-how" id="how-it-works" aria-labelledby="how-title">
           <div class="public-section-intro">
             <p class="public-eyebrow"><span class="eyebrow-rule"></span> The care journey</p>
-            <h2 id="how-title">A clearer next step can make <em>a difficult day feel more manageable.</em></h2>
-            <p class="section-intro-copy">The platform is designed around the practical work that helps care teams keep a person's situation in view.</p>
+            <h2 id="how-title">A little more clarity at <em>every step.</em></h2>
+            <p class="section-intro-copy">The platform is designed around practical work that helps care teams keep a person's situation in view.</p>
           </div>
           <div class="care-journey">
             <article class="journey-step">
