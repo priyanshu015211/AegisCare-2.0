@@ -1,44 +1,41 @@
 export function severityColor(severity: string): string {
   switch (severity.toLowerCase()) {
-    case 'critical':
-      return 'var(--color-severity-critical)';
-    case 'high':
-      return 'var(--color-severity-high)';
-    case 'medium':
-      return 'var(--color-severity-medium)';
-    default:
-      return 'var(--color-severity-low)';
+    case 'critical': return 'var(--color-severity-critical)';
+    case 'high': return 'var(--color-severity-high)';
+    case 'medium': return 'var(--color-severity-medium)';
+    default: return 'var(--color-severity-low)';
   }
 }
 
 export function severityBadge(severity: string): string {
+  const safe = escapeHtml(severity);
   const color = severityColor(severity);
-  return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono uppercase tracking-wide border" style="color:${color};border-color:${color};background:${color}14;">
-    <span class="w-1.5 h-1.5 rounded-full" style="background:${color}"></span>${severity}
-  </span>`;
+  return `<span class="severity-badge" style="--severity-color:${color}"><span class="severity-dot"></span>${safe}</span>`;
 }
 
-export function statTile(label: string, value: string, sub?: string): string {
+export function statTile(label: string, value: string, sub?: string, icon = '◈'): string {
   return `
-    <div class="panel p-5">
-      <div class="text-[11px] uppercase tracking-[0.12em] text-ink-soft font-mono">${label}</div>
-      <div class="text-3xl font-semibold mt-2 font-tabular">${value}</div>
-      ${sub ? `<div class="text-xs text-ink-soft mt-1">${sub}</div>` : ''}
-    </div>
+    <article class="metric-card">
+      <div class="metric-topline">
+        <span class="metric-label">${escapeHtml(label)}</span>
+        <span class="metric-icon" aria-hidden="true">${icon}</span>
+      </div>
+      <div class="metric-value">${escapeHtml(value)}</div>
+      ${sub ? `<div class="metric-caption">${escapeHtml(sub)}</div>` : ''}
+    </article>
   `;
 }
 
 export function panelHeader(title: string, caption?: string): string {
   return `
-    <div class="mb-4">
-      <h2 class="text-base font-semibold">${title}</h2>
-      ${caption ? `<p class="text-xs text-ink-soft mt-0.5">${caption}</p>` : ''}
+    <div class="panel-heading">
+      <div><h2>${escapeHtml(title)}</h2>${caption ? `<p>${escapeHtml(caption)}</p>` : ''}</div>
     </div>
   `;
 }
 
-export function escapeHtml(str: string): string {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+export function escapeHtml(value: unknown): string {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  })[char] ?? char);
 }

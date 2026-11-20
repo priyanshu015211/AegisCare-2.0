@@ -1,4 +1,4 @@
-import type { HealthResponse } from '../api/client';
+import type { AuthUser, HealthResponse } from '../api/client';
 import { api } from '../api/client';
 import { escapeHtml } from './ui';
 
@@ -17,53 +17,52 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'analytics', label: 'Analytics', glyph: '▥', group: 'Insights' },
 ];
 
-export function renderShell(root: HTMLElement, activeId: string): HTMLElement {
+export function renderShell(root: HTMLElement, activeId: string, user: AuthUser): HTMLElement {
   root.innerHTML = '';
-
   const layout = document.createElement('div');
   layout.className = 'app-layout';
-
-  layout.appendChild(buildSidebar(activeId));
+  layout.appendChild(buildSidebar(activeId, user));
 
   const main = document.createElement('div');
   main.className = 'app-main';
-
   main.appendChild(buildTopbar(activeId));
-
   const content = document.createElement('main');
   content.id = 'page-content';
   content.className = 'page-content';
   main.appendChild(content);
-
   layout.appendChild(main);
   root.appendChild(layout);
 
+  const signOut = root.querySelector<HTMLButtonElement>('#sign-out');
+  signOut?.addEventListener('click', () => {
+    api.logout();
+    window.location.hash = '#home';
+  });
   return content;
 }
 
-function buildSidebar(activeId: string): HTMLElement {
+function buildSidebar(activeId: string, user: AuthUser): HTMLElement {
   const aside = document.createElement('aside');
   aside.className = 'app-sidebar';
+  const visibleItems = user.role === 'COORDINATOR'
+    ? NAV_ITEMS.filter(item => item.id !== 'triage')
+    : NAV_ITEMS;
+  const roleLabel = user.role === 'ADMIN' ? 'Administrator'
+    : user.role === 'CLINICIAN' ? 'Clinician' : 'Care coordinator';
+  const initials = user.fullName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   aside.innerHTML = `
     <a class="brand-lockup" href="#home" aria-label="Return to AegisCare home">
       <span class="brand-mark">A</span>
-      <span class="brand-copy">
-        <strong>AegisCare</strong>
-        <small>Care operations</small>
-      </span>
+      <span class="brand-copy"><strong>AegisCare</strong><small>Care operations</small></span>
     </a>
-    <div class="sidebar-context">
-      <span class="context-dot"></span>
-      HEALTH NETWORK
-    </div>
+    <div class="sidebar-context"><span class="context-dot"></span> HEALTH NETWORK</div>
     <nav class="sidebar-nav" aria-label="Main navigation">
       ${(['Workspace', 'Insights'] as const).map(group => `
         <div class="nav-group">
           <div class="nav-group-label">${group}</div>
-          ${NAV_ITEMS.filter(item => item.group === group).map(item => `
+          ${visibleItems.filter(item => item.group === group).map(item => `
             <a href="#${item.id}" class="nav-link ${item.id === activeId ? 'active' : ''}" ${item.id === activeId ? 'aria-current="page"' : ''}>
-              <span class="nav-glyph" aria-hidden="true">${item.glyph}</span>
-              <span>${item.label}</span>
+              <span class="nav-glyph" aria-hidden="true">${item.glyph}</span><span>${item.label}</span>
               ${item.id === 'emergency' ? '<span class="nav-live-dot" title="Emergency monitoring"></span>' : ''}
             </a>
           `).join('')}
@@ -71,9 +70,9 @@ function buildSidebar(activeId: string): HTMLElement {
       `).join('')}
     </nav>
     <div class="sidebar-footer">
-      <div class="profile-avatar">AC</div>
-      <div class="profile-copy"><strong>Operations team</strong><small>Administrator</small></div>
-      <span class="profile-menu" aria-hidden="true">···</span>
+      <div class="profile-avatar">${escapeHtml(initials || 'AC')}</div>
+      <div class="profile-copy"><strong>${escapeHtml(user.fullName)}</strong><small>${escapeHtml(roleLabel)}</small></div>
+      <button type="button" class="profile-menu" id="sign-out" aria-label="Sign out" title="Sign out">↗</button>
     </div>
   `;
   return aside;
@@ -82,7 +81,7 @@ function buildSidebar(activeId: string): HTMLElement {
 function buildTopbar(activeId: string): HTMLElement {
   const bar = document.createElement('header');
   bar.className = 'app-topbar';
-  const title = NAV_ITEMS.find(n => n.id === activeId)?.label ?? 'Overview';
+  const title = NAV_ITEMS.find(item => item.id === activeId)?.label ?? 'Overview';
   bar.innerHTML = `
     <div class="topbar-left">
       <button type="button" class="mobile-menu" id="mobile-menu" aria-label="Toggle navigation">☰</button>
@@ -93,26 +92,26 @@ function buildTopbar(activeId: string): HTMLElement {
       <div id="storage-indicator" class="storage-pill"><span class="status-dot"></span><span>Checking connection</span></div>
     </div>
   `;
-
-  const menuButton = bar.querySelector('#mobile-menu') as HTMLButtonElement;
-  menuButton.addEventListener('click', () => document.body.classList.toggle('nav-open'));
-
-  const clock = bar.querySelector('#local-clock') as HTMLElement;
-  const updateClock = () => { clock.textContent = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(new Date()); };
+  const menuButton = bar.querySelector<HTMLButtonElement>('#mobile-menu');
+  menuButton?.addEventListener('click', () => document.body.classList.toggle('nav-open'));
+  const clock = bar.querySelector<HTMLElement>('#local-clock');
+  const updateClock = () => {
+    if (clock) clock.textContent = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(new Date());
+  };
   updateClock();
   window.setInterval(updateClock, 30_000);
-
-  loadStorageStatus(bar.querySelector('#storage-indicator') as HTMLElement);
+  const storage = bar.querySelector<HTMLElement>('#storage-indicator');
+  if (storage) void loadStorageStatus(storage);
   return bar;
 }
 
 async function loadStorageStatus(el: HTMLElement) {
   try {
     const health = await api.get<HealthResponse>('/system/health');
-    const isSupabase = health.storage.mode === 'supabase';
-    el.classList.toggle('is-connected', isSupabase);
-    el.classList.toggle('is-fallback', !isSupabase);
-    el.innerHTML = `<span class="status-dot"></span><span>${isSupabase ? 'Database connected' : 'Demo storage mode'}</span>`;
+    const isPostgres = health.storage.mode === 'supabase' && health.storage.connected;
+    el.classList.toggle('is-connected', isPostgres);
+    el.classList.toggle('is-fallback', !isPostgres);
+    el.innerHTML = `<span class="status-dot"></span><span>${isPostgres ? 'Database connected' : 'Development storage'}</span>`;
     el.title = health.storage.detail;
   } catch {
     el.classList.add('is-error');

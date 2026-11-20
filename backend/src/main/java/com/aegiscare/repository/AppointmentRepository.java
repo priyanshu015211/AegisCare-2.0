@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, String> {
     List<Appointment> findTop25ByOrderByScheduledAtAsc();
+    List<Appointment> findTop25ByHospitalIdOrderByScheduledAtAsc(String hospitalId);
 }

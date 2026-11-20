@@ -35,6 +35,12 @@ public class TriageSession {
 
     private String status = "active";
 
+    @Column(name = "hospital_id", length = 255)
+    private String hospitalId;
+
+    @Column(name = "created_by_user_id", length = 36)
+    private String createdByUserId;
+
     @Column(name = "started_at")
     private Instant startedAt = Instant.now();
 
@@ -60,4 +66,9 @@ public class TriageSession {
     public void setStatus(String status) { this.status = status; }
     public Instant getStartedAt() { return startedAt; }
     public void setStartedAt(Instant startedAt) { this.startedAt = startedAt; }
+
+    public String getHospitalId() { return hospitalId; }
+    public void setHospitalId(String hospitalId) { this.hospitalId = hospitalId; }
+    public String getCreatedByUserId() { return createdByUserId; }
+    public void setCreatedByUserId(String createdByUserId) { this.createdByUserId = createdByUserId; }
 }

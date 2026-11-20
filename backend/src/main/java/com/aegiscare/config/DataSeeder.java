@@ -4,6 +4,7 @@ import com.aegiscare.entity.*;
 import com.aegiscare.repository.*;
 import com.aegiscare.service.RiskScoringService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -11,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
+@ConditionalOnProperty(name = "aegiscare.demo-data.enabled", havingValue = "true")
 public class DataSeeder implements CommandLineRunner {
 
     private final HospitalRepository hospitalRepository;
@@ -109,6 +111,7 @@ public class DataSeeder implements CommandLineRunner {
             Patient p = new Patient();
             p.setPatientCode(patientCode);
             p.setFullName(patientCode);
+            p.setHospitalId(primaryHospitalId());
             return patientRepository.save(p);
         });
 
@@ -116,6 +119,7 @@ public class DataSeeder implements CommandLineRunner {
 
         TriageSession session = new TriageSession();
         session.setPatientCode(patientCode);
+        session.setHospitalId(primaryHospitalId());
         session.setSymptomsCsv(String.join(", ", symptoms));
         session.setDuration(duration);
         session.setSeverity(result.severity());
@@ -144,10 +148,15 @@ public class DataSeeder implements CommandLineRunner {
     private Appointment appointment(String patientCode, String doctorId, String type, String status, int minutesFromNow) {
         Appointment a = new Appointment();
         a.setPatientCode(patientCode);
+        a.setHospitalId(doctorRepository.findById(doctorId).map(Doctor::getHospitalId).orElse(null));
         a.setDoctorId(doctorId);
         a.setAppointmentType(type);
         a.setStatus(status);
         a.setScheduledAt(Instant.now().plus(minutesFromNow, ChronoUnit.MINUTES));
         return a;
+    }
+
+    private String primaryHospitalId() {
+        return hospitalRepository.findAll().stream().findFirst().map(Hospital::getId).orElse(null);
     }
 }
