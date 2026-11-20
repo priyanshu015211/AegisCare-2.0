@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: aegiscare-backend
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/system/health
+    envVars:
+      - key: AEGISCARE_REQUIRE_POSTGRES
+        value: "true"
+      - key: AEGISCARE_DEMO_DATA
+        value: "false"
+      - key: AEGISCARE_JWT_SECRET
+        sync: false
+      - key: SUPABASE_JDBC_URL
+        sync: false
+      - key: SUPABASE_DB_USER
+        sync: false
+      - key: SUPABASE_DB_PASSWORD
+        sync: false
+      - key: AEGISCARE_CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: AEGISCARE_BOOTSTRAP_ADMIN_ENABLED
+        value: "true"
+      - key: AEGISCARE_BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+      - key: AEGISCARE_BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
+      - key: AEGISCARE_BOOTSTRAP_ADMIN_NAME
+        value: AegisCare Administrator

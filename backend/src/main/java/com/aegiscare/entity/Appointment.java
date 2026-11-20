@@ -25,6 +25,12 @@ public class Appointment {
     @Column(name = "appointment_type")
     private String appointmentType = "in_person"; // in_person | video | phone
 
+    @Column(name = "hospital_id", length = 255)
+    private String hospitalId;
+
+    @Column(name = "created_by_user_id", length = 36)
+    private String createdByUserId;
+
     private String notes;
 
     public String getId() { return id; }
@@ -41,4 +47,9 @@ public class Appointment {
     public void setAppointmentType(String appointmentType) { this.appointmentType = appointmentType; }
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+
+    public String getHospitalId() { return hospitalId; }
+    public void setHospitalId(String hospitalId) { this.hospitalId = hospitalId; }
+    public String getCreatedByUserId() { return createdByUserId; }
+    public void setCreatedByUserId(String createdByUserId) { this.createdByUserId = createdByUserId; }
 }

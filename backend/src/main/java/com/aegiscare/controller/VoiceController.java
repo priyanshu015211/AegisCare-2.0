@@ -7,6 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,11 +24,17 @@ public class VoiceController {
         this.speechService = speechService;
     }
 
-    public record SpeakRequest(String text) {}
+    public record SpeakRequest(@NotBlank @Size(max = 3000) String text) {}
 
     @PostMapping(value = "/transcribe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> transcribe(@RequestPart("audio") MultipartFile audio) {
         try {
+            if (audio == null || audio.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No audio received."));
+            }
+            if (audio.getSize() > 5L * 1024 * 1024) {
+                return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(Map.of("error", "Audio upload exceeds 5 MB."));
+            }
             byte[] bytes = audio.getBytes();
             if (bytes.length == 0) {
                 return ResponseEntity.badRequest().body(Map.of("error", "No audio received."));
@@ -43,10 +52,7 @@ public class VoiceController {
     }
 
     @PostMapping("/speak")
-    public ResponseEntity<byte[]> speak(@RequestBody SpeakRequest request) {
-        if (request.text() == null || request.text().isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<byte[]> speak(@Valid @RequestBody SpeakRequest request) {
         try {
             byte[] audio = speechService.synthesize(request.text());
             return ResponseEntity.ok()

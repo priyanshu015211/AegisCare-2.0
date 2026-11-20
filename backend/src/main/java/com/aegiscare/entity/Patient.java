@@ -28,6 +28,12 @@ public class Patient {
     @Column(name = "allergies")
     private String allergiesCsv = "";
 
+    @Column(name = "hospital_id", length = 255)
+    private String hospitalId;
+
+    @Column(name = "created_by_user_id", length = 36)
+    private String createdByUserId;
+
     @Column(name = "created_at")
     private Instant createdAt = Instant.now();
 
@@ -51,4 +57,9 @@ public class Patient {
     public void setAllergiesCsv(String v) { this.allergiesCsv = v; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
+    public String getHospitalId() { return hospitalId; }
+    public void setHospitalId(String hospitalId) { this.hospitalId = hospitalId; }
+    public String getCreatedByUserId() { return createdByUserId; }
+    public void setCreatedByUserId(String createdByUserId) { this.createdByUserId = createdByUserId; }
 }
