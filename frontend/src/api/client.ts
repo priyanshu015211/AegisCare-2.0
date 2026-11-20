@@ -1,48 +1,96 @@
-const BASE = '/api/v1';
+const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '');
+const BASE = `${API_ORIGIN}/api/v1`;
+const TOKEN_KEY = 'aegiscare.access_token';
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  fullName: string;
+  role: 'ADMIN' | 'CLINICIAN' | 'COORDINATOR';
+  hospitalId: string | null;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  expiresIn: number;
+  user: AuthUser;
+}
+
+export function getAccessToken(): string | null {
+  return sessionStorage.getItem(TOKEN_KEY);
+}
+
+export function clearSession(): void {
+  sessionStorage.removeItem(TOKEN_KEY);
+}
+
+function handleUnauthorized(status: number, path: string, hadToken: boolean): void {
+  if (status === 401 && !path.endsWith('/auth/login') && hadToken) {
+    clearSession();
+    window.dispatchEvent(new CustomEvent('aegiscare:auth-expired'));
+  }
+}
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
+  const headers = new Headers(options.headers);
+  if (options.body && !(options.body instanceof FormData) && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
+  const token = getAccessToken();
+  if (token) headers.set('Authorization', `Bearer ${token}`);
+
+  const res = await fetch(`${BASE}${path}`, { ...options, headers });
   if (!res.ok) {
     const text = await res.text().catch(() => res.statusText);
-    throw new Error(`${res.status} ${text}`);
+    handleUnauthorized(res.status, path, Boolean(token));
+    throw new Error(`${res.status} ${text || res.statusText}`);
   }
+  if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
 
 async function postAudio(path: string, audio: Blob): Promise<{ transcript: string }> {
   const form = new FormData();
   form.append('audio', audio, 'recording.webm');
-  const res = await fetch(`${BASE}${path}`, { method: 'POST', body: form });
+  const headers = new Headers();
+  const token = getAccessToken();
+  if (token) headers.set('Authorization', `Bearer ${token}`);
+  const res = await fetch(`${BASE}${path}`, { method: 'POST', headers, body: form });
   if (!res.ok) {
-    const text = await res.text().catch(() => res.statusText);
-    throw new Error(`${res.status} ${text}`);
+    handleUnauthorized(res.status, path, Boolean(token));
+    throw new Error(`${res.status} ${await res.text().catch(() => res.statusText)}`);
   }
   return res.json();
 }
 
 async function postForAudio(path: string, body: unknown): Promise<Blob> {
-  const res = await fetch(`${BASE}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+  const headers = new Headers({ 'Content-Type': 'application/json' });
+  const token = getAccessToken();
+  if (token) headers.set('Authorization', `Bearer ${token}`);
+  const res = await fetch(`${BASE}${path}`, { method: 'POST', headers, body: JSON.stringify(body) });
   if (!res.ok) {
-    const text = await res.text().catch(() => res.statusText);
-    throw new Error(`${res.status} ${text}`);
+    handleUnauthorized(res.status, path, Boolean(token));
+    throw new Error(`${res.status} ${await res.text().catch(() => res.statusText)}`);
   }
   return res.blob();
+}
+
+async function login(email: string, password: string): Promise<AuthResponse> {
+  const result = await request<AuthResponse>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+  sessionStorage.setItem(TOKEN_KEY, result.accessToken);
+  return result;
 }
 
 export const api = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
-  /** Uploads a recorded audio clip and returns its transcript via Google Speech-to-Text. */
+  login,
+  logout: clearSession,
   transcribeAudio: (audio: Blob) => postAudio('/voice/transcribe', audio),
-  /** Sends text to Google Text-to-Speech and returns the spoken response as playable audio. */
   synthesizeSpeech: (text: string) => postForAudio('/voice/speak', { text }),
 };
 
