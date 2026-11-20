@@ -1,25 +1,52 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
 
 spring:
   application:
     name: aegiscare-backend
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
     show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    # Existing installations created by the earlier Hibernate schema are
+    # treated as V1; new databases run V1 then all later migrations.
+    baseline-version: 1
+    baseline-description: existing-aegiscare-schema
+    clean-disabled: true
+    validate-on-migrate: true
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 5MB
+      max-request-size: 5MB
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
 
-# Voice (STT/TTS): calls Google Cloud Speech-to-Text / Text-to-Speech via their
-# REST APIs using a plain API key. Set GOOGLE_CLOUD_API_KEY in the environment;
-# left blank, voice endpoints respond with a clear "not configured" error
-# instead of the rest of the app being affected.
 aegiscare:
+  storage:
+    require-postgres: ${AEGISCARE_REQUIRE_POSTGRES:false}
+  demo-data:
+    enabled: ${AEGISCARE_DEMO_DATA:false}
+  security:
+    jwt:
+      secret: ${AEGISCARE_JWT_SECRET:}
+      ttl-minutes: ${AEGISCARE_JWT_TTL_MINUTES:30}
+    bootstrap-admin:
+      enabled: ${AEGISCARE_BOOTSTRAP_ADMIN_ENABLED:false}
+      email: ${AEGISCARE_BOOTSTRAP_ADMIN_EMAIL:}
+      password: ${AEGISCARE_BOOTSTRAP_ADMIN_PASSWORD:}
+      full-name: ${AEGISCARE_BOOTSTRAP_ADMIN_NAME:AegisCare Administrator}
+  cors:
+    allowed-origins: ${AEGISCARE_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}
   voice:
     google-api-key: ${GOOGLE_CLOUD_API_KEY:}
 
