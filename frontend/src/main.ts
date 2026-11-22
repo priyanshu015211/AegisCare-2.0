@@ -17,17 +17,15 @@ const routes: Record<string, (el: HTMLElement) => void | Promise<void>> = {
   analytics: renderAnalytics,
 };
 
-function getAppRoot(): HTMLElement {
+const root: HTMLElement = (() => {
   const element = document.getElementById('app');
 
-  if (!(element instanceof HTMLElement)) {
+  if (!element) {
     throw new Error('AegisCare application root was not found');
   }
 
   return element;
-}
-
-let navigationSequence = 0;
+})();let navigationSequence = 0;
 
 function currentRoute(): string {
   const hash = window.location.hash.replace('#', '');
@@ -36,7 +34,6 @@ function currentRoute(): string {
 
 async function navigate(): Promise<void> {
   const sequence = ++navigationSequence;
-  const root = getAppRoot();
   const requestedHash = window.location.hash.replace('#', '');
   if (requestedHash && !routes[requestedHash] && document.getElementById(requestedHash)) return;
   let routeId = currentRoute();
