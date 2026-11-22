@@ -23,16 +23,16 @@ Non-administrator reads are filtered to the account's assigned hospital. New pat
 
 ## Database lifecycle
 
-- Flyway owns schema evolution under `backend/src/main/resources/db/migration`.
+- Flyway owns schema evolution. MySQL 8 migrations are under `backend/src/main/resources/db/migration/mysql`; H2-only development/test migrations remain under `backend/src/main/resources/db/migration/h2`.
 - Hibernate is configured for `validate`, not automatic schema mutation.
-- New databases run the initial schema and subsequent migrations.
-- Existing Hibernate-created databases are baselined at version 1 and receive the security/hospital-scoping migration.
-- Local development can use file-backed H2. Production must set `AEGISCARE_REQUIRE_POSTGRES=true`; the app then refuses to start if PostgreSQL is missing or unreachable.
+- MySQL 8 is the production database. Its Flyway chain is designed for a new, empty MySQL schema; MySQL baselining is disabled to avoid applying migrations to an unknown pre-existing schema.
+- Existing PostgreSQL or H2 data is not automatically converted. If historical data must be retained, perform a separately designed, tested export/transform/import and reconciliation before switching users.
+- Production must set `AEGISCARE_REQUIRE_MYSQL=true`; the app waits briefly for MySQL to become reachable and then refuses to start rather than falling back to local storage. Local development can use MySQL 8 through Docker Compose or the development-only file-backed H2 fallback.
 - Demo data is opt-in and must remain disabled in production (`AEGISCARE_DEMO_DATA=false`).
 
 ## Operational secrets
 
-Set secrets through the hosting provider's secret/environment manager. Do not commit `.env` files, JWT secrets, database credentials, bootstrap passwords or API keys. Use a unique high-entropy `AEGISCARE_JWT_SECRET` of at least 32 UTF-8 bytes. Set `AEGISCARE_CORS_ALLOWED_ORIGINS` to the exact deployed frontend origin; do not use `*`.
+Set secrets through the hosting provider's secret/environment manager. Do not commit `.env` files, JWT secrets, database credentials, bootstrap passwords or API keys. Use a unique high-entropy `AEGISCARE_JWT_SECRET` of at least 32 UTF-8 bytes. Use a non-root MySQL application account for the backend; never pass the MySQL root password to the API service. Set `AEGISCARE_CORS_ALLOWED_ORIGINS` to the exact deployed frontend origin; do not use `*`.
 
 ## Current limitations — do not use real patient data
 
@@ -43,7 +43,7 @@ This is a prototype foundation. Before handling real patient information, the pr
 - secure cookie or hardened browser-token strategy, XSS controls and a Content Security Policy;
 - authentication throttling/lockout controls, password recovery/rotation and session revocation policy;
 - explicit audit-event capture, retention and tamper-evidence for sensitive reads and writes;
-- encrypted backups and tested restore procedures, monitoring and incident response;
+- encrypted database-aware backups (for example, `mysqldump --single-transaction`) and tested restore procedures, monitoring and incident response;
 - end-to-end deployment testing and accessibility review;
 - clinical governance and validation of triage protocols. The current `RiskScoringService` is a demonstration rule set and must not guide clinical decisions.
 
