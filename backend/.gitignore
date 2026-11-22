@@ -3,3 +3,6 @@ data/
 *.class
 .idea/
 *.iml
+.env
+.env.*
+!.env.example
