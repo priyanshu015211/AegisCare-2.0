@@ -17,4 +17,4 @@ aegiscare:
   demo-data:
     enabled: false
   storage:
-    require-postgres: false
+    require-mysql: false
