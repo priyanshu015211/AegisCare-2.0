@@ -108,10 +108,10 @@ function buildTopbar(activeId: string): HTMLElement {
 async function loadStorageStatus(el: HTMLElement) {
   try {
     const health = await api.get<HealthResponse>('/system/health');
-    const isPostgres = health.storage.mode === 'supabase' && health.storage.connected;
-    el.classList.toggle('is-connected', isPostgres);
-    el.classList.toggle('is-fallback', !isPostgres);
-    el.innerHTML = `<span class="status-dot"></span><span>${isPostgres ? 'Database connected' : 'Development storage'}</span>`;
+    const isMysql = health.storage.mode === 'mysql' && health.storage.connected;
+    el.classList.toggle('is-connected', isMysql);
+    el.classList.toggle('is-fallback', !isMysql);
+    el.innerHTML = `<span class="status-dot"></span><span>${isMysql ? 'MySQL connected' : 'Development storage'}</span>`;
     el.title = health.storage.detail;
   } catch {
     el.classList.add('is-error');
