@@ -1,23 +1,56 @@
 services:
+  # Private MySQL 8 service. Keep its only persistent data directory on the
+  # attached Render disk; do not publish port 3306 to the public internet.
+  - type: pserv
+    name: aegiscare-mysql
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./database/Dockerfile
+    autoDeployTrigger: "off"
+    disk:
+      name: aegiscare-mysql-data
+      mountPath: /var/lib/mysql
+      sizeGB: 10
+    envVars:
+      - key: MYSQL_DATABASE
+        value: aegiscare
+      - key: MYSQL_USER
+        value: aegiscare_app
+      - key: MYSQL_PASSWORD
+        generateValue: true
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+
+  # Spring Boot API. It connects to MySQL over Render's private network.
   - type: web
     name: aegiscare-backend
     runtime: docker
+    plan: starter
+    region: singapore
     rootDir: backend
     dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /api/v1/system/health
     envVars:
-      - key: AEGISCARE_REQUIRE_POSTGRES
+      - key: AEGISCARE_REQUIRE_MYSQL
         value: "true"
       - key: AEGISCARE_DEMO_DATA
         value: "false"
+      - key: AEGISCARE_MYSQL_JDBC_URL
+        value: "jdbc:mysql://aegiscare-mysql:3306/aegiscare?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&sslMode=REQUIRED"
+      - key: AEGISCARE_MYSQL_USERNAME
+        fromService:
+          name: aegiscare-mysql
+          type: pserv
+          envVarKey: MYSQL_USER
+      - key: AEGISCARE_MYSQL_PASSWORD
+        fromService:
+          name: aegiscare-mysql
+          type: pserv
+          envVarKey: MYSQL_PASSWORD
       - key: AEGISCARE_JWT_SECRET
-        sync: false
-      - key: SUPABASE_JDBC_URL
-        sync: false
-      - key: SUPABASE_DB_USER
-        sync: false
-      - key: SUPABASE_DB_PASSWORD
-        sync: false
+        generateValue: true
       - key: AEGISCARE_CORS_ALLOWED_ORIGINS
         sync: false
       - key: AEGISCARE_BOOTSTRAP_ADMIN_ENABLED

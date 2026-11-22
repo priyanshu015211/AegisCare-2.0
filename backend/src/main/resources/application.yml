@@ -12,15 +12,18 @@ spring:
     properties:
       hibernate:
         format_sql: false
+        jdbc:
+          time_zone: UTC
     show-sql: false
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: classpath:db/migration/h2
     baseline-on-migrate: true
-    # Existing installations created by the earlier Hibernate schema are
-    # treated as V1; new databases run V1 then all later migrations.
+    # The local H2 fallback may contain a schema created by an earlier
+    # development build. MySQL production explicitly disables baselining and
+    # requires a fresh schema for its separately versioned migration chain.
     baseline-version: 1
-    baseline-description: existing-aegiscare-schema
+    baseline-description: existing-local-development-schema
     clean-disabled: true
     validate-on-migrate: true
   servlet:
@@ -33,7 +36,7 @@ spring:
 
 aegiscare:
   storage:
-    require-postgres: ${AEGISCARE_REQUIRE_POSTGRES:false}
+    require-mysql: ${AEGISCARE_REQUIRE_MYSQL:false}
   demo-data:
     enabled: ${AEGISCARE_DEMO_DATA:false}
   security:
